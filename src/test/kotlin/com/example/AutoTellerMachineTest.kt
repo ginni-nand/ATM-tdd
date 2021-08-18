@@ -2,12 +2,15 @@ package com.example
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 
-class AutoTellerMachineTest: StringSpec({
+class AutoTellerMachineTest : StringSpec({
     "Should call Banking service with correct amount " {
         val printer = FakePrinter()
-        val fakeBankingService =FakeBankingService(true)
-        AutoTellerMachine(printer,fakeBankingService).withdraw(800)
+        val fakeBankingService = FakeBankingService(true)
+        AutoTellerMachine(printer, fakeBankingService).withdraw(800)
         fakeBankingService.balance shouldBe 800
 
     }
@@ -17,19 +20,20 @@ class AutoTellerMachineTest: StringSpec({
         val printer = FakePrinter()
         //just return a fake response . does not care about verification
         //stub
-        val fakeBankingService =FakeBankingService(true)
-        AutoTellerMachine(printer,fakeBankingService).withdraw(800)
+        val fakeBankingService = FakeBankingService(true)
+        AutoTellerMachine(printer, fakeBankingService).withdraw(800)
         printer.count shouldBe 1
-        printer.printString shouldBe "800 withdrawal successful"
+        printer.printString shouldBe "800 withdrawal successfu"
     }
 
 
     "should throw exception if banking service throws an exception" {
         val printer = FakePrinter()
-        val fakeBankingService =FakeBankingService(false)
-        AutoTellerMachine(printer,fakeBankingService).withdraw(800)
+        val fakeBankingService = FakeBankingService(false)
+        AutoTellerMachine(printer, fakeBankingService).withdraw(800)
         printer.printString shouldBe "Error withdrawing"
     }
+
 
 
 })
